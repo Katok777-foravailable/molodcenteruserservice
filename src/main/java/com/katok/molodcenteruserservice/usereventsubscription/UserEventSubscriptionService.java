@@ -1,5 +1,6 @@
 package com.katok.molodcenteruserservice.usereventsubscription;
 
+import com.katok.molodcenteruserservice.exception.ValueNotFound;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,6 @@ public class UserEventSubscriptionService {
 
     public UserEventSubscription getUserSubscriptionById(Long id) {
         return userEventSubscriptionRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User event subscriptions with id " + id + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("User event subscriptions with id " + id + " undefined"));
     }
 }

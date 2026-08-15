@@ -1,5 +1,6 @@
 package com.katok.molodcenteruserservice.usereventregistration;
 
+import com.katok.molodcenteruserservice.exception.ValueNotFound;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,6 @@ public class UserEventRegistrationService {
 
     public UserEventRegistration getUserRegistrationById(Long id) {
         return userEventRegistrationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User registration event with id " + id + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("User registration event with id " + id + " undefined"));
     }
 }

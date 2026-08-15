@@ -4,6 +4,7 @@ import com.katok.molodcenteruserservice.usereventregistration.UserEventRegistrat
 import com.katok.molodcenteruserservice.usereventregistration.UserEventRegistrationService;
 import com.katok.molodcenteruserservice.usereventsubscription.UserEventSubscriptionDto;
 import com.katok.molodcenteruserservice.usereventsubscription.UserEventSubscriptionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto createUser(@RequestBody UserDtoCreate userDtoCreate) {
+    public UserDto createUser(@Valid @RequestBody UserDtoCreate userDtoCreate) {
         User userDetails = User.builder()
                 .telegramUserId(userDtoCreate.getTelegramUserId())
                 .name(userDtoCreate.getName())

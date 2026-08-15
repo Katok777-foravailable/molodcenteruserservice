@@ -2,6 +2,7 @@ package com.katok.molodcenteruserservice.usereventregistration;
 
 import com.katok.molodcenteruserservice.user.User;
 import com.katok.molodcenteruserservice.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +32,7 @@ public class UserEventRegistrationController {
     }
 
     @PostMapping
-    public UserEventRegistrationDto registerUserEvent(UserEventRegistrationDtoCreate userEventRegistrationDtoCreate) {
+    public UserEventRegistrationDto registerUserEvent(@Valid @RequestBody UserEventRegistrationDtoCreate userEventRegistrationDtoCreate) {
         User user = userService.getUserById(userEventRegistrationDtoCreate.getUserId());
 
         UserEventRegistration userEventRegistration = UserEventRegistration.builder()

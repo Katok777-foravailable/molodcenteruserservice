@@ -1,5 +1,6 @@
 package com.katok.molodcenteruserservice.user;
 
+import com.katok.molodcenteruserservice.exception.ValueNotFound;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,16 +21,16 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("User with id " + id + " undefined"));
     }
 
     public User getUserByTelegramUserId(Long telegramUserId) {
         return userRepository.findUserByTelegramUserId(telegramUserId)
-                .orElseThrow(() -> new IllegalArgumentException("User with telegram user id " + telegramUserId + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("User with telegram user id " + telegramUserId + " undefined"));
     }
 
     public User getUserByPhoneNumber(String phoneNumber) {
         return userRepository.findUserByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new IllegalArgumentException("User with phone number " + phoneNumber + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("User with phone number " + phoneNumber + " undefined"));
     }
 }

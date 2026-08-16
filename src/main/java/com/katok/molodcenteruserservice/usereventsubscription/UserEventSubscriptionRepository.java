@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserEventSubscriptionRepository extends JpaRepository<UserEventSubscription, Long> {
-    @Query("SELECT r FROM UserEventSubscription r WHERE (:categoryId IS NULL OR r.categoryId = :categoryId) AND (:userId IS NULL OR r.user.id = :userId)")
+    @Query("SELECT r FROM UserEventSubscription r WHERE (:categoryId IS NULL OR r.categoryId = :categoryId) AND (:userId IS NULL OR r.user.id = :userId) AND (:youthCenterId IS NULL OR r.youthCenterId = :youthCenterId)")
     Page<UserEventSubscription> findUserEventSubscriptionsByCategoryIdAndUserId(
             @Param("categoryId") Long categoryId,
             @Param("userId") Long userId,
+            @Param("youthCenterId") Long youthCenterId,
             Pageable pageable);
 }

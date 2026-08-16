@@ -24,4 +24,7 @@ public class UserEventSubscription {
 
     @Column(name = "category_id", nullable = false)
     private Long categoryId;
+
+    @Column(name = "youth_center_id", nullable = false)
+    private Long youthCenterId;
 }

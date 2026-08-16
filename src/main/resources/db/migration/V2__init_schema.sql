@@ -1,0 +1,1 @@
+ALTER TABLE user_event_subscriptions ADD COLUMN youth_center_id BIGINT NOT NULL;

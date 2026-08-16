@@ -12,11 +12,13 @@ public class UserEventSubscriptionDto {
         return new UserEventSubscriptionDto(
                 userEventSubscription.getId(),
                 userEventSubscription.getUser().getId(),
-                userEventSubscription.getCategoryId()
+                userEventSubscription.getCategoryId(),
+                userEventSubscription.getYouthCenterId()
         );
     }
 
     private Long id;
     private Long userId;
     private Long categoryId;
+    private Long youthCenterId;
 }

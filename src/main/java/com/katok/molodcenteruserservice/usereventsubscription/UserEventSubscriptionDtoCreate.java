@@ -13,4 +13,5 @@ public class UserEventSubscriptionDtoCreate {
     private Long userId;
     @NotNull
     private Long categoryId;
+    private Long youthCenterId;
 }

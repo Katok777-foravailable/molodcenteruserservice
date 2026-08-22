@@ -22,3 +22,9 @@ spring:
 
 servers:
   molodcenter: "localhost:8081"
+
+feign:
+  client:
+    config:
+      default:
+        dismiss404: true

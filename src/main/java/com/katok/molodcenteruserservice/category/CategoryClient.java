@@ -6,13 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(url = "${servers.molodcenter}" + "/api/categories")
+@FeignClient(name = "category-client", url = "${servers.molodcenter}" + "/api/categories", dismiss404 = true)
 public interface CategoryClient {
     @GetMapping
     Page<CategoryDto> getAllGlobalCategories(@RequestParam(defaultValue = "0") int page);
 
     @GetMapping("/{id}")
-    CategoryDto getCategoryById(@PathVariable Long id);
+    ResponseEntity<CategoryDto> getCategoryById(@PathVariable Long id);
 
     @PostMapping
     ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryCreateDto categoryCreateDto);
@@ -21,5 +21,5 @@ public interface CategoryClient {
     ResponseEntity<Void> deleteCategory(@PathVariable Long id);
 
     @PatchMapping("/{id}")
-    CategoryDto updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryCreateDto categoryCreateDto);
+    ResponseEntity<CategoryDto> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryCreateDto categoryCreateDto);
 }

@@ -3,11 +3,12 @@ package com.katok.molodcenteruserservice.event;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
 
-@FeignClient(url = "${servers.molodcenter}" + "/api/events")
+@FeignClient(name = "event-client", url = "${servers.molodcenter}" + "/api/events", dismiss404 = true)
 public interface EventClient {
     @GetMapping
     Page<EventDto> getEvents(
@@ -18,13 +19,13 @@ public interface EventClient {
             @RequestParam(defaultValue = "0") int page);
 
     @GetMapping("/{id}")
-    EventDto getEventById(Long id);
+    ResponseEntity<EventDto> getEventById(@PathVariable Long id);
 
     @PostMapping
-    EventDto addEvent(@Valid @RequestBody EventCreateDto eventCreateDtoDetails);
+    ResponseEntity<EventDto> addEvent(@Valid @RequestBody EventCreateDto eventCreateDtoDetails);
 
     @PatchMapping("/{id}")
-    EventDto updateEvent(@PathVariable Long id, @Valid @RequestBody EventCreateDto eventCreateDtoDetails);
+    ResponseEntity<EventDto> updateEvent(@PathVariable Long id, @Valid @RequestBody EventCreateDto eventCreateDtoDetails);
 
     @DeleteMapping("/{id}")
     void deleteEvent(@PathVariable Long id);

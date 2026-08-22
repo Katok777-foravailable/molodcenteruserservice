@@ -7,6 +7,7 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -26,12 +27,13 @@ public class UserEventSubscriptionService {
     }
 
     public UserEventSubscription subscribeUser(UserEventSubscription userEventSubscription) {
-        CategoryDto category = categoryClient.getCategoryById(userEventSubscription.getCategoryId());
-        if (category == null) {
+        ResponseEntity<CategoryDto> category = categoryClient.getCategoryById(userEventSubscription.getCategoryId());
+        CategoryDto categoryDto = category.getBody();
+        if (category.getStatusCode().is4xxClientError() || categoryDto == null) {
             throw new IllegalArgumentException("Категорії з айді " + userEventSubscription.getCategoryId() + " не існує!");
         }
-        if (!Objects.equals(userEventSubscription.getYouthCenterId(), category.getYouthCenterId())) {
-            throw new IllegalArgumentException("Молодіжний центр який ви вказали (" + userEventSubscription.getYouthCenterId() + "), відрізняєте від молодіжниго центру в категорії (" + category.getYouthCenterId() + ")!");
+        if (!Objects.equals(userEventSubscription.getYouthCenterId(), categoryDto.getYouthCenterId())) {
+            throw new IllegalArgumentException("Молодіжний центр який ви вказали (" + userEventSubscription.getYouthCenterId() + "), відрізняєте від молодіжниго центру в категорії (" + categoryDto.getYouthCenterId() + ")!");
         }
 
         return userEventSubscriptionRepository.save(userEventSubscription);

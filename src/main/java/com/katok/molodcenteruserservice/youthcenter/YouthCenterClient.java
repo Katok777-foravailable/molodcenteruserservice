@@ -8,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(url = "${servers.molodcenter}" + "/api/youth-centers")
+@FeignClient(name = "youthcenter-client", url = "${servers.molodcenter}" + "/api/youth-centers", dismiss404 = true)
 public interface YouthCenterClient {
     @GetMapping("/{id}")
-    YouthCenterDto getYouthCenterById(@PathVariable Long id);
+    ResponseEntity<YouthCenterDto> getYouthCenterById(@PathVariable Long id);
 
     @GetMapping
     Page<YouthCenterDto> getYouthCentersByLocation(@RequestParam Double latitude,
@@ -32,7 +32,7 @@ public interface YouthCenterClient {
     ResponseEntity<YouthCenterDto> createYouthCenter(@Valid @RequestBody YouthCenterCreateDto youthCenterCreateDto);
 
     @PatchMapping("/{id}")
-    YouthCenterDto updateYouthCenter(@PathVariable Long id, @Valid @RequestBody YouthCenterCreateDto youthCenterCreateDto);
+    ResponseEntity<YouthCenterDto> updateYouthCenter(@PathVariable Long id, @Valid @RequestBody YouthCenterCreateDto youthCenterCreateDto);
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteYouthCenter(@PathVariable Long id);

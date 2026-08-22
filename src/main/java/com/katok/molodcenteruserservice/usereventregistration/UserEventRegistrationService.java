@@ -7,6 +7,7 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,8 +25,8 @@ public class UserEventRegistrationService {
     }
 
     public UserEventRegistration registerUser(UserEventRegistration userEventRegistration) {
-        EventDto eventDto = eventClient.getEventById(userEventRegistration.getEventId());
-        if (eventDto == null) {
+        ResponseEntity<EventDto> event = eventClient.getEventById(userEventRegistration.getEventId());
+        if (event.getStatusCode().is4xxClientError() || !event.hasBody()) {
             throw new IllegalArgumentException("Події з айді " + userEventRegistration.getEventId() + " не знайдено!");
         }
 

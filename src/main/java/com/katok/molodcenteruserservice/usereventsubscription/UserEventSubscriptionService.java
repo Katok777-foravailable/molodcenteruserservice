@@ -39,6 +39,6 @@ public class UserEventSubscriptionService {
 
     public UserEventSubscription getUserSubscriptionById(Long id) {
         return userEventSubscriptionRepository.findById(id)
-                .orElseThrow(() -> new ValueNotFound("User event subscriptions with id " + id + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("Підписку на подію з айді " + id + " не знайдено"));
     }
 }

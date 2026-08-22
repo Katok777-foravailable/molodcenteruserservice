@@ -1,5 +1,7 @@
 package com.katok.molodcenteruserservice.usereventregistration;
 
+import com.katok.molodcenteruserservice.event.EventClient;
+import com.katok.molodcenteruserservice.event.EventDto;
 import com.katok.molodcenteruserservice.exception.ValueNotFound;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserEventRegistrationService {
     private final UserEventRegistrationRepository userEventRegistrationRepository;
+    private final EventClient eventClient;
 
     public Page<UserEventRegistration> getUsersEventRegistration(Pageable pageable) {
         return userEventRegistrationRepository.findAll(pageable);
@@ -21,11 +24,16 @@ public class UserEventRegistrationService {
     }
 
     public UserEventRegistration registerUser(UserEventRegistration userEventRegistration) {
+        EventDto eventDto = eventClient.getEventById(userEventRegistration.getEventId());
+        if (eventDto == null) {
+            throw new IllegalArgumentException("Події з айді " + userEventRegistration.getEventId() + " не знайдено!");
+        }
+
         return userEventRegistrationRepository.save(userEventRegistration);
     }
 
     public UserEventRegistration getUserRegistrationById(Long id) {
         return userEventRegistrationRepository.findById(id)
-                .orElseThrow(() -> new ValueNotFound("User registration event with id " + id + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("Реєстрацію юзера з айді " + id + " не знайдено"));
     }
 }

@@ -21,16 +21,16 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ValueNotFound("User with id " + id + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("Користувач з айді " + id + " не знайдено"));
     }
 
     public User getUserByTelegramUserId(Long telegramUserId) {
         return userRepository.findUserByTelegramUserId(telegramUserId)
-                .orElseThrow(() -> new ValueNotFound("User with telegram user id " + telegramUserId + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("Користувач з телеграм айді " + telegramUserId + " не знайдений"));
     }
 
     public User getUserByPhoneNumber(String phoneNumber) {
         return userRepository.findUserByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new ValueNotFound("User with phone number " + phoneNumber + " undefined"));
+                .orElseThrow(() -> new ValueNotFound("Користувач з номером телефону " + phoneNumber + " не знайдений"));
     }
 }

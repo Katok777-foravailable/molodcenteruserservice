@@ -35,11 +35,10 @@ public class UserEventSubscriptionController {
 
     @GetMapping
     public Page<UserEventSubscriptionDto> getUsersSubscriptions(@RequestParam(required = false) Long categoryId,
-                                                                @RequestParam(required = false) Long userId,
                                                                 @RequestParam(required = false) Long youthCenterId,
                                                                 @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
 
-        return userEventSubscriptionService.getUserEventSubscriptionsByCategoryIdAndUserIdAndYouthCenterId(categoryId, userId, youthCenterId, pageable).map(UserEventSubscriptionDto::toUserEventSubscriptionDto);
+        return userEventSubscriptionService.getUserEventSubscriptionsByCategoryIdAndUserIdAndYouthCenterId(categoryId, null, youthCenterId, pageable).map(UserEventSubscriptionDto::toUserEventSubscriptionDto);
     }
 }

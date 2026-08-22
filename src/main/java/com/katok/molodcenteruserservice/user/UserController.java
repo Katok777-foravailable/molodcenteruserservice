@@ -28,16 +28,18 @@ public class UserController {
 
     @GetMapping("/{id}/registration")
     public Page<UserEventRegistrationDto> getUserRegistrations(@PathVariable Long id,
-                                                               @RequestParam(required = false) int page) {
+                                                               @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
         return userEventRegistrationService.getUsersEventRegistrationByEventIdAndUserId(null, id, pageable).map(UserEventRegistrationDto::toUserEventRegistrationDto);
     }
 
     @GetMapping("/{id}/subscription")
     public Page<UserEventSubscriptionDto> getUserSubscriptions(@PathVariable Long id,
-                                                               @RequestParam(required = false) int page) {
+                                                               @RequestParam(required = false) Long categoryId,
+                                                               @RequestParam(required = false) Long youthCenterId,
+                                                               @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return userEventSubscriptionService.getUserEventSubscriptionsByCategoryIdAndUserId(null, id, pageable).map(UserEventSubscriptionDto::toUserEventSubscriptionDto);
+        return userEventSubscriptionService.getUserEventSubscriptionsByCategoryIdAndUserIdAndYouthCenterId(categoryId, id, youthCenterId, pageable).map(UserEventSubscriptionDto::toUserEventSubscriptionDto);
     }
 
     @GetMapping("/search")

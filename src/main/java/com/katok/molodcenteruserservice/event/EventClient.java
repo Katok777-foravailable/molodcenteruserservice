@@ -1,11 +1,13 @@
 package com.katok.molodcenteruserservice.event;
 
 import jakarta.validation.Valid;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
 
+@FeignClient(url = "${servers.molodcenter}" + "/api/events")
 public interface EventClient {
     @GetMapping
     Page<EventDto> getEvents(

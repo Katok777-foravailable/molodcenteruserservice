@@ -21,6 +21,6 @@ public class EventCreateDto {
     private String description;
     @NotNull
     private OffsetDateTime startDateTime;
-    @NotBlank
+    @NotNull
     private OffsetDateTime endDateTime;
 }

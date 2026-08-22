@@ -27,7 +27,7 @@ public class UserEventRegistrationService {
     public UserEventRegistration registerUser(UserEventRegistration userEventRegistration) {
         ResponseEntity<EventDto> event = eventClient.getEventById(userEventRegistration.getEventId());
         if (event.getStatusCode().is4xxClientError() || !event.hasBody()) {
-            throw new IllegalArgumentException("Події з айді " + userEventRegistration.getEventId() + " не знайдено!");
+            throw new ValueNotFound("Події з айді " + userEventRegistration.getEventId() + " не знайдено!");
         }
 
         return userEventRegistrationRepository.save(userEventRegistration);

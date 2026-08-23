@@ -31,6 +31,5 @@ feign:
 
 scheduler:
   user-event:
-    limit: 5000
-    cooldown: 1000
+    limit: 500
     cron: "0 0 4 * * *"

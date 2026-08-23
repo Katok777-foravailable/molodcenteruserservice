@@ -24,8 +24,6 @@ public class UserEventScheduler {
 
     @Value("${scheduler.user-event.limit}")
     private int limit;
-    @Value("${scheduler.user-event.cooldown}")
-    private int cooldown;
 
     @Async
     @Scheduled(cron = "${scheduler.user-event.cron}")
@@ -33,7 +31,7 @@ public class UserEventScheduler {
         Long lastEventId = null;
 
         while (true) {
-            Pageable pageable = PageRequest.of(0, 500);
+            Pageable pageable = PageRequest.of(0, limit);
             Page<Long> eventIds = userEventRegistrationService.getDistinctEventIds(lastEventId, pageable);
 
             if (eventIds.isEmpty()) {

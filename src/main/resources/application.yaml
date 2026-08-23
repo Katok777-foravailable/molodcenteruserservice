@@ -28,3 +28,9 @@ feign:
     config:
       default:
         dismiss404: true
+
+scheduler:
+  user-event:
+    limit: 5000
+    cooldown: 1000
+    cron: "0 0 4 * * *"

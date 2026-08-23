@@ -37,4 +37,15 @@ public class UserEventRegistrationService {
         return userEventRegistrationRepository.findById(id)
                 .orElseThrow(() -> new ValueNotFound("Реєстрацію юзера з айді " + id + " не знайдено"));
     }
+
+    public Page<Long> getDistinctEventIds(Long lastEventId, Pageable pageable) {
+        return userEventRegistrationRepository.findDistinctEventIds(lastEventId, pageable);
+    }
+
+    public int deleteEventRegistrations(
+            Long userId,
+            Long eventId,
+            int limit) {
+        return userEventRegistrationRepository.deleteEventRegistrations(userId, eventId, limit);
+    }
 }

@@ -4,6 +4,8 @@ import com.katok.molodcenteruserservice.usereventregistration.UserEventRegistrat
 import com.katok.molodcenteruserservice.usereventregistration.UserEventRegistrationService;
 import com.katok.molodcenteruserservice.usereventsubscription.UserEventSubscriptionDto;
 import com.katok.molodcenteruserservice.usereventsubscription.UserEventSubscriptionService;
+import com.katok.molodcenteruserservice.userrole.UserRoleDto;
+import com.katok.molodcenteruserservice.userrole.UserRoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ public class UserController {
     private final UserService userService;
     private final UserEventRegistrationService userEventRegistrationService;
     private final UserEventSubscriptionService userEventSubscriptionService;
+    private final UserRoleService userRoleService;
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
@@ -40,6 +43,14 @@ public class UserController {
                                                                @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
         return userEventSubscriptionService.getUserEventSubscriptionsByCategoryIdAndUserIdAndYouthCenterId(categoryId, id, youthCenterId, pageable).map(UserEventSubscriptionDto::toUserEventSubscriptionDto);
+    }
+
+    @GetMapping("/{id}/role")
+    public Page<UserRoleDto> getUserSubscriptions(@PathVariable Long id,
+                                                  @RequestParam(required = false) Long youthCenterId,
+                                                  @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return userRoleService.getUserRoleByUserIdAndYouthCenter(id, youthCenterId, pageable).map(UserRoleDto::toUserRoleDto);
     }
 
     @GetMapping("/search")

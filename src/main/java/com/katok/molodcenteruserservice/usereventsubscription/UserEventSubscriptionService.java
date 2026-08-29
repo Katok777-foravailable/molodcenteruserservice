@@ -23,7 +23,7 @@ public class UserEventSubscriptionService {
     }
 
     public Page<UserEventSubscription> getUserEventSubscriptionsByCategoryIdAndUserIdAndYouthCenterId(@Nullable Long categoryId, @Nullable Long userId, @Nullable Long youthCenterId, Pageable pageable) {
-        return userEventSubscriptionRepository.findUserEventSubscriptionsByCategoryIdAndUserId(categoryId, userId, youthCenterId, pageable);
+        return userEventSubscriptionRepository.findUserEventSubscriptionsByCategoryIdAndUserIdAndYouthCenterId(categoryId, userId, youthCenterId, pageable);
     }
 
     public UserEventSubscription subscribeUser(UserEventSubscription userEventSubscription) {

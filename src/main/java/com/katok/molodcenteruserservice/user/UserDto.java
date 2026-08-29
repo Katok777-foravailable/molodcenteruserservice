@@ -17,7 +17,8 @@ public class UserDto {
                 user.getExternalId(),
                 user.getName(),
                 user.getLastName(),
-                user.getPhoneNumber()
+                user.getPhoneNumber(),
+                user.getAdminRank()
         );
     }
 
@@ -27,4 +28,5 @@ public class UserDto {
     private String name;
     private String lastName;
     private String phoneNumber;
+    private Short adminRank;
 }

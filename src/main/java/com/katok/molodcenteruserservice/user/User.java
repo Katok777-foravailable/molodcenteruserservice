@@ -39,6 +39,10 @@ public class User {
     private String externalId;
 
     @Builder.Default
+    @Column(name = "admin_rank", nullable = false)
+    private Short adminRank = 0;
+
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserEventRegistration> userEventRegistration = new ArrayList<>();
 

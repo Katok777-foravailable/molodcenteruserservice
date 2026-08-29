@@ -73,10 +73,39 @@ public class UserController {
     }
 
     @GetMapping
-    public Page<UserDto> getUsers(@RequestParam(defaultValue = "0") int page) {
+    public Page<UserDto> getUsers(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(required = false) Short adminRank) {
         Pageable pageable = PageRequest.of(page, 10);
 
+        if (adminRank != null) {
+            return userService.getUsersByAdminRank(adminRank, pageable).map(UserDto::toUserDto);
+        }
+
         return userService.getUsers(pageable).map(UserDto::toUserDto);
+    }
+
+    @PatchMapping("/{id}")
+    public UserDto updateUser(@PathVariable Long id,
+                              @RequestBody UserDtoCreate userDtoCreate) {
+        User user = userService.getUserById(id);
+
+        if (userDtoCreate.getName() != null) {
+            user.setName(userDtoCreate.getName());
+        }
+        if (userDtoCreate.getLastName() != null) {
+            user.setLastName(userDtoCreate.getLastName());
+        }
+        if (userDtoCreate.getTelegramUserId() != null) {
+            user.setTelegramUserId(userDtoCreate.getTelegramUserId());
+        }
+        if (userDtoCreate.getAdminRank() != null) {
+            user.setAdminRank(userDtoCreate.getAdminRank());
+        }
+        if (userDtoCreate.getPhoneNumber() != null) {
+            user.setPhoneNumber(userDtoCreate.getPhoneNumber());
+        }
+
+        return UserDto.toUserDto(userService.updateUser(user));
     }
 
     @PostMapping
@@ -86,6 +115,7 @@ public class UserController {
                 .name(userDtoCreate.getName())
                 .lastName(userDtoCreate.getLastName())
                 .phoneNumber(userDtoCreate.getPhoneNumber())
+                .adminRank(userDtoCreate.getAdminRank())
                 .build();
 
         return UserDto.toUserDto(userService.createUser(userDetails));

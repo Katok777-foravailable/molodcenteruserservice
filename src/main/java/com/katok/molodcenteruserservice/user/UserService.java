@@ -24,6 +24,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ValueNotFound("Користувач з айді " + id + " не знайдено"));
@@ -42,5 +46,9 @@ public class UserService {
     public User getUserByExternalId(String externalId) {
         return userRepository.findUserByExternalId(externalId)
                 .orElseThrow(() -> new ValueNotFound("Користувач з external id " + externalId + " не знайдений"));
+    }
+
+    public Page<User> getUsersByAdminRank(short adminRank, Pageable pageable) {
+        return userRepository.findUsersByAdminRank(adminRank, pageable);
     }
 }

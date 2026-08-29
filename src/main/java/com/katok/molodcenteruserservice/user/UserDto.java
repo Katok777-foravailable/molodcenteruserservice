@@ -14,6 +14,7 @@ public class UserDto {
         return new UserDto(
                 user.getId(),
                 user.getTelegramUserId(),
+                user.getExternalId(),
                 user.getName(),
                 user.getLastName(),
                 user.getPhoneNumber()
@@ -22,6 +23,7 @@ public class UserDto {
 
     private Long id;
     private Long telegramUserId;
+    private String externalId;
     private String name;
     private String lastName;
     private String phoneNumber;

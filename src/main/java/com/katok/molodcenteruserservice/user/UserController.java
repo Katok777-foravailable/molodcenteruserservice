@@ -44,13 +44,18 @@ public class UserController {
 
     @GetMapping("/search")
     public ResponseEntity<UserDto> getUser(@RequestParam(required = false) Long telegramId,
-                                          @RequestParam(required = false) String phoneNumber) {
+                                          @RequestParam(required = false) String phoneNumber,
+                                           @RequestParam(required = false) String externalId) {
         if (telegramId != null) {
             return ResponseEntity.ok(UserDto.toUserDto(userService.getUserByTelegramUserId(telegramId)));
         }
 
         if (phoneNumber != null) {
             return ResponseEntity.ok(UserDto.toUserDto(userService.getUserByPhoneNumber(phoneNumber)));
+        }
+
+        if (externalId != null) {
+            return ResponseEntity.ok(UserDto.toUserDto(userService.getUserByExternalId(externalId)));
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

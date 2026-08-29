@@ -34,6 +34,9 @@ public class User {
     @Column(name = "phone_number", unique = true, length = 20)
     private String phoneNumber;
 
+    @Column(name = "external_id", unique = true, nullable = false, length = 20)
+    private String externalId;
+
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserEventRegistration> userEventRegistration = new ArrayList<>();

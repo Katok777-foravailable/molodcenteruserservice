@@ -1,9 +1,12 @@
 package com.katok.molodcenteruserservice.user;
 
 import com.katok.molodcenteruserservice.exception.ValueNotFound;
+import com.katok.molodcenteruserservice.utils.NanoIdGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.resilience.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +18,9 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+    @Retryable(value = DataIntegrityViolationException.class, maxRetries = 3)
     public User createUser(User user) {
+        user.setExternalId(NanoIdGenerator.generate(20));
         return userRepository.save(user);
     }
 
@@ -32,5 +37,10 @@ public class UserService {
     public User getUserByPhoneNumber(String phoneNumber) {
         return userRepository.findUserByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ValueNotFound("Користувач з номером телефону " + phoneNumber + " не знайдений"));
+    }
+
+    public User getUserByExternalId(String externalId) {
+        return userRepository.findUserByExternalId(externalId)
+                .orElseThrow(() -> new ValueNotFound("Користувач з external id " + externalId + " не знайдений"));
     }
 }

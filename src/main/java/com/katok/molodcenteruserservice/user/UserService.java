@@ -9,9 +9,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.resilience.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    public final static Set<Character> accessChars = Collections.unmodifiableSet(new HashSet<>() {{
+        for (char letter : "АаБбВвГгҐґДдЕеЄєЖжЗзИиІіЇїЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЬьЮюЯя'".toCharArray()) {
+            add(letter);
+        }
+    }});
+
     private final UserRepository userRepository;
 
     public Page<User> getUsers(Pageable pageable) {
@@ -21,6 +31,32 @@ public class UserService {
     @Retryable(value = DataIntegrityViolationException.class, maxRetries = 3)
     public User createUser(User user) {
         user.setExternalId(NanoIdGenerator.generate(20));
+
+        if (user.getName().length() > 30) {
+            throw new IllegalArgumentException("Ім'я не може бути більше 30 символів!");
+        }
+        if (user.getLastName().length() > 30) {
+            throw new IllegalArgumentException("Фамілія не може бути більше 30 символів!");
+        }
+
+        for (char letter : user.getName().toCharArray()) {
+            if (accessChars.contains(letter)) {
+                continue;
+            }
+
+            throw new IllegalArgumentException("Ім'я може складатися лише з українських букв і апострофа!");
+        }
+        for (char letter : user.getLastName().toCharArray()) {
+            if (accessChars.contains(letter)) {
+                continue;
+            }
+
+            throw new IllegalArgumentException("Фамілія може складатися лише з українських букв і апострофа!");
+        }
+
+        user.setName(String.valueOf(user.getName().charAt(0)).toUpperCase() + user.getName().substring(1).toLowerCase());
+        user.setLastName(String.valueOf(user.getLastName().charAt(0)).toUpperCase() + user.getLastName().substring(1).toLowerCase());
+
         return userRepository.save(user);
     }
 

@@ -14,8 +14,10 @@ import lombok.NoArgsConstructor;
 public class UserDtoCreate {
     private Long telegramUserId;
     @NotBlank
+    @Size(max = 30)
     private String name;
     @NotBlank
+    @Size(max = 30)
     private String lastName;
     @Size(max = 20)
     private String phoneNumber;

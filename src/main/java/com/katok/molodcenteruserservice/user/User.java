@@ -1,5 +1,6 @@
 package com.katok.molodcenteruserservice.user;
 
+import com.katok.molodcenteruserservice.favouriteyouthcenter.FavouriteYouthCenter;
 import com.katok.molodcenteruserservice.usereventregistration.UserEventRegistration;
 import com.katok.molodcenteruserservice.usereventsubscription.UserEventSubscription;
 import com.katok.molodcenteruserservice.userrole.UserRole;
@@ -53,4 +54,8 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRole> userRoles = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavouriteYouthCenter> favouriteYouthCenters = new ArrayList<>();
 }

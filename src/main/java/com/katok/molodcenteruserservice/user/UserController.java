@@ -1,5 +1,7 @@
 package com.katok.molodcenteruserservice.user;
 
+import com.katok.molodcenteruserservice.favouriteyouthcenter.FavouriteYouthCenterDto;
+import com.katok.molodcenteruserservice.favouriteyouthcenter.FavouriteYouthCenterService;
 import com.katok.molodcenteruserservice.usereventregistration.UserEventRegistrationDto;
 import com.katok.molodcenteruserservice.usereventregistration.UserEventRegistrationService;
 import com.katok.molodcenteruserservice.usereventsubscription.UserEventSubscriptionDto;
@@ -23,6 +25,7 @@ public class UserController {
     private final UserEventRegistrationService userEventRegistrationService;
     private final UserEventSubscriptionService userEventSubscriptionService;
     private final UserRoleService userRoleService;
+    private final FavouriteYouthCenterService favouriteYouthCenterService;
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
@@ -51,6 +54,15 @@ public class UserController {
                                                   @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
         return userRoleService.getUserRoleByUserIdAndYouthCenter(id, youthCenterId, pageable).map(UserRoleDto::toUserRoleDto);
+    }
+
+    @GetMapping("/{id}/favourite-youth-centers")
+    public Page<FavouriteYouthCenterDto> getFavouriteYouthCenters(@PathVariable Long id,
+                                                                  @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+
+        return favouriteYouthCenterService.getFavouriteYouthCentersByYouthCenterIdAndUserId(null, id, pageable)
+                .map(FavouriteYouthCenterDto::toFavouriteYouthCenterDto);
     }
 
     @GetMapping("/search")

@@ -14,8 +14,8 @@ public interface FavouriteYouthCenterRepository extends JpaRepository<FavouriteY
                                  WHERE (:userId IS NULL OR r.user.id = :userId)
                                    AND (:youthCenterId IS NULL OR r.youthCenterId = :youthCenterId)""")
     Page<FavouriteYouthCenter> findFavouriteYouthCentersByYouthCenterIdAndUserId(
-            @Param("userId") Long userId,
             @Param("youthCenterId") Long youthCenterId,
+            @Param("userId") Long userId,
             Pageable pageable
     );
 }

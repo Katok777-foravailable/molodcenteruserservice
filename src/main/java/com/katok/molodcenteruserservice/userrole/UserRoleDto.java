@@ -18,5 +18,5 @@ public class UserRoleDto {
     private Long id;
     private Long youthCenterId;
     private Long userId;
-    private short role;
+    private Short role;
 }

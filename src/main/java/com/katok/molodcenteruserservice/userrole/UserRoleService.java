@@ -17,7 +17,7 @@ public class UserRoleService {
     private final YouthCenterClient youthCenterClient;
     private final UserService userService;
 
-    public UserRole createUserRole(UserRole userRole) {
+    public UserRole changeUserRole(UserRole userRole) {
         if (userService.getUserById(userRole.getUser().getId()) == null) {
             throw new IllegalArgumentException("Юзера з айді " + userRole.getUser().getId() + " не знайдено!");
         }
@@ -28,24 +28,11 @@ public class UserRoleService {
             throw new IllegalArgumentException("Молодіжного центра з айді " + userRole.getYouthCenterId() + " не знайдено!");
         }
 
-        boolean isRoleExist = false;
-
-        for (UserRoleRanks userRoleRank : UserRoleRanks.values()) {
-            if (userRoleRank.getRank() == userRole.getRole()) {
-                isRoleExist = true;
-                break;
-            }
-        }
-
-        if (!isRoleExist) {
-            throw new IllegalArgumentException("Ролі з айді " + userRole.getRole() + " не знайдено!");
-        }
-
         return userRoleRepository.save(userRole);
     }
 
-    public Page<UserRole> getUserRolesByYouthCenterId(Long youthCenterId, Pageable pageable) {
-        return userRoleRepository.findUserRolesByUserIdAndYouthCenterId(null, youthCenterId, pageable);
+    public Page<UserRole> getUserRolesByYouthCenterId(Long userId, Long youthCenterId, Pageable pageable) {
+        return userRoleRepository.findUserRolesByUserIdAndYouthCenterId(userId, youthCenterId, pageable);
     }
 
     public Page<UserRole> getUserRolesByUserId(Long userId, Pageable pageable) {

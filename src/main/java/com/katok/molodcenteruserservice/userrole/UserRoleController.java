@@ -17,22 +17,29 @@ public class UserRoleController {
     private final UserRoleService userRoleService;
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserRoleDto> createUserRole(@RequestBody @Valid UserRoleDtoCreate userRoleDtoCreate) {
-        User user = userService.getUserById(userRoleDtoCreate.getUserId());
+    @PutMapping
+    public ResponseEntity<UserRoleDto> changeUserRole(@RequestBody @Valid UserRoleDtoCreate userRoleDtoCreate) {
+        UserRole userRole;
 
-        if (user == null) {
-            throw new IllegalArgumentException("Юзера з айді " + userRoleDtoCreate.getUserId() + " не знайдено!");
+        Page<UserRole> userRolePage = userRoleService.getUserRoleByUserIdAndYouthCenter(userRoleDtoCreate.getUserId(), userRoleDtoCreate.getYouthCenterId(), PageRequest.of(0, 10));
+        if (!userRolePage.getContent().isEmpty()) {
+            userRole = userRolePage.getContent().getFirst();
+            userRole.setRole(userRoleDtoCreate.getRole());
+        } else {
+            User user = userService.getUserById(userRoleDtoCreate.getUserId());
+
+            if (user == null) {
+                throw new IllegalArgumentException("Юзера з айді " + userRoleDtoCreate.getUserId() + " не знайдено!");
+            }
+
+            userRole = new UserRole(
+                    null,
+                    userRoleDtoCreate.getYouthCenterId(),
+                    user,
+                    userRoleDtoCreate.getRole()
+            );
         }
-
-        UserRole userRole = new UserRole(
-                null,
-                userRoleDtoCreate.getYouthCenterId(),
-                user,
-                userRoleDtoCreate.getRole()
-        );
-
-        return ResponseEntity.ok(UserRoleDto.toUserRoleDto(userRoleService.createUserRole(userRole)));
+        return ResponseEntity.ok(UserRoleDto.toUserRoleDto(userRoleService.changeUserRole(userRole)));
     }
 
     @GetMapping("/{id}")
@@ -41,10 +48,11 @@ public class UserRoleController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserRoleDto>> getUserRoleByYouthCenterId(@RequestParam Long youthCenterId,
+    public ResponseEntity<Page<UserRoleDto>> getUserRoleByYouthCenterIdAndUserId(@RequestParam(required = false) Long userId,
+                                                                        @RequestParam(required = false) Long youthCenterId,
                                                                         @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
 
-        return ResponseEntity.ok(userRoleService.getUserRolesByYouthCenterId(youthCenterId, pageable).map(UserRoleDto::toUserRoleDto));
+        return ResponseEntity.ok(userRoleService.getUserRolesByYouthCenterId(userId, youthCenterId, pageable).map(UserRoleDto::toUserRoleDto));
     }
 }
